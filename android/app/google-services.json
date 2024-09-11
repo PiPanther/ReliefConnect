@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "724626241427",
+    "project_id": "florel-b75ff",
+    "storage_bucket": "florel-b75ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724626241427:android:3b42cebb74e0b772645a66",
+        "android_client_info": {
+          "package_name": "com.example.frs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5vT9PiT6ThnJdqIfFLW3KaUU9m2rffPg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
