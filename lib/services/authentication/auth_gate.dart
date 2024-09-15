@@ -1,27 +1,26 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frs/screens/homescreen.dart';
 import 'package:frs/screens/login_screen.dart';
+import 'package:frs/services/authentication/auth_servicec.dart';
 
-class AuthGate extends StatelessWidget {
+class AuthGate extends ConsumerWidget {
   const AuthGate({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            print(snapshot.data!.displayName);
-            return const Homescreen();
-          } else if (ConnectionState.waiting == snapshot.connectionState) {
-            return const Center(child: Text("Please wait..."));
-          } else {
-            return const SignInPage2();
-          }
-        },
-      ),
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateProvider);
+
+    return authState.when(data: (user) {
+      if (user != null) {
+        return const Homescreen();
+      } else {
+        return const SignInPage2();
+      }
+    }, error: (error, stacktrace) {
+      return Text(error.toString());
+    }, loading: () {
+      return const CircularProgressIndicator();
+    });
   }
 }

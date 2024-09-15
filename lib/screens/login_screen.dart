@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frs/screens/homescreen.dart';
 import 'package:frs/services/authentication/auth_servicec.dart';
+import 'package:frs/services/campaigns/campaign_gate.dart';
 
 class SignInPage2 extends ConsumerWidget {
   const SignInPage2({Key? key}) : super(key: key);
@@ -37,7 +38,6 @@ class _Logo extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
     final googleSignInService = ref.read(googleSignInProvider);
 
     return Column(
@@ -57,19 +57,6 @@ class _Logo extends ConsumerWidget {
               }
             },
             label: const Text('Sign In with Google')),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            "Welcome to Flutter!",
-            textAlign: TextAlign.center,
-            style: isSmallScreen
-                ? Theme.of(context).textTheme.bodyLarge
-                : Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: Colors.black),
-          ),
-        )
       ],
     );
   }
