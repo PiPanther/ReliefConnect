@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class DonationTaker {
+  final String id;
   final String upi;
   final String firmName;
   final String firmAddress;
@@ -14,6 +15,7 @@ class DonationTaker {
 
   DonationTaker(
       {required this.firmName,
+      required this.id,
       required this.upi,
       required this.firmAddress,
       required this.ownerName,
@@ -26,6 +28,7 @@ class DonationTaker {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'upi': upi,
       'firmName': firmName,
       'firmAddress': firmAddress,
@@ -41,6 +44,7 @@ class DonationTaker {
 
   factory DonationTaker.fromMap(Map<String, dynamic> map) {
     return DonationTaker(
+      id: map['id'],
       upi: map['upi'],
       gst: map['gst'],
       firmName: map['firmName'] ?? '',

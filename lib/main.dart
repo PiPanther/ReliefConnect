@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frs/screens/campaign_homepage.dart';
 import 'package:frs/screens/campaign_registation.dart';
@@ -9,6 +10,7 @@ import 'package:frs/services/authentication/auth_gate.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  await dotenv.load(fileName: "./.env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(

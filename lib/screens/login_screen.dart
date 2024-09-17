@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frs/screens/homescreen.dart';
-import 'package:frs/services/authentication/auth_servicec.dart';
+import 'package:frs/providers/Authentication/auth_servicec.dart';
 import 'package:frs/services/campaigns/campaign_gate.dart';
 
 class SignInPage2 extends ConsumerWidget {

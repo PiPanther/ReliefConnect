@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frs/providers/campaigns/campaign_provider.dart';
-import 'package:frs/services/authentication/auth_servicec.dart';
+import 'package:frs/models/donation_taker.dart';
+import 'package:frs/providers/Campaigns/campaign_provider.dart';
+import 'package:frs/providers/Authentication/auth_servicec.dart';
 
 class CampaignRegistationScreen extends ConsumerWidget {
   const CampaignRegistationScreen({super.key});
@@ -15,6 +16,9 @@ class CampaignRegistationScreen extends ConsumerWidget {
     final addressController = TextEditingController();
     final panController = TextEditingController();
     final gstController = TextEditingController();
+    final upiController = TextEditingController();
+    late String thumbnail;
+    late List<String> images;
 
     return Scaffold(
       appBar: AppBar(
@@ -47,13 +51,19 @@ class CampaignRegistationScreen extends ConsumerWidget {
             decoration: const InputDecoration(hintText: 'GST'),
             controller: gstController,
           ),
+          TextFormField(
+            autofillHints: Iterable.empty(),
+            decoration: const InputDecoration(hintText: 'UPI Id'),
+            controller: upiController,
+          ),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
                   onPressed: () async {
                     try {
-                      await campaign.pickAndUploadThumbnail();
+                      thumbnail = await campaign.pickAndUploadThumbnail() ??
+                          "https://st2.depositphotos.com/3904951/8925/v/450/depositphotos_89250312-stock-illustration-photo-picture-web-icon-in.jpg";
                       print("Success !");
                     } catch (e) {
                       print("Error: $e");
@@ -64,7 +74,7 @@ class CampaignRegistationScreen extends ConsumerWidget {
               ElevatedButton(
                   onPressed: () async {
                     try {
-                      await campaign.pickAndUploadMultipleImages();
+                      images = await campaign.pickAndUploadMultipleImages();
                       print('Success!');
                     } catch (e) {
                       print("Error : ${e.toString()}");
@@ -76,7 +86,23 @@ class CampaignRegistationScreen extends ConsumerWidget {
           ),
           TextButton(
               onPressed: () async {
-                Navigator.pushNamed(context, '/campaignHomePage');
+                DonationTaker donationTaker = DonationTaker(
+                  id: user!.uid,
+                    firmName: firmNameController.text.trim(),
+                    upi: upiController.text.trim(),
+                    firmAddress: addressController.text.trim(),
+                    ownerName: firmNameController.text.trim(),
+                    pan: panController.text.trim(),
+                    donationAmount: 0,
+                    donationsBy: [],
+                    gst: gstController.text.trim(),
+                    thumbnail: thumbnail,
+                    imageUrls: images);
+                print(donationTaker.imageUrls);
+                print(donationTaker.thumbnail);
+                await campaign.addCampaign(donationTaker);
+
+                Navigator.pushReplacementNamed(context, '/campaignHomePage');
               },
               child: const Text('Submit details')),
         ],

@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frs/providers/campaigns/campaign_provider.dart';
-import 'package:frs/services/authentication/auth_servicec.dart';
-import 'package:frs/services/campaigns/campaign_gate.dart';
+import 'package:frs/constants/pallette.dart';
+import 'package:frs/providers/Authentication/auth_servicec.dart';
+import 'package:frs/providers/nav_bar_provider.dart';
+import 'package:frs/screens/campaign_homepage.dart';
+import 'package:frs/screens/seek_help_screen.dart';
+import 'package:frs/screens/homepage.dart';
 
 class Homescreen extends ConsumerWidget {
   const Homescreen({super.key});
@@ -11,7 +14,6 @@ class Homescreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncUser = ref.watch(authStateProvider);
-
     return asyncUser.when(
       data: (user) => _buildScaffold(context, ref, user),
       loading: () =>
@@ -23,53 +25,37 @@ class Homescreen extends ConsumerWidget {
   }
 
   Widget _buildScaffold(BuildContext context, WidgetRef ref, User? user) {
-    final campaignList = ref.read(campaignListProvider);
+    final currentPage = ref.watch(currentPageProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(user?.displayName ?? 'Welcome'),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              try {
-                await ref.read(googleSignInProvider).signOut();
-                Navigator.pushNamed(context, '/loginScreen');
-
-                // Navigate to login screen or show a success message
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error signing out: $e')),
-                );
-              }
-            },
-            icon: const Icon(Icons.logout),
-          )
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 0),
+        child: IndexedStack(
+          index: currentPage,
+          children: const [
+            Homepage(),
+            CampaignHomepage(),
+            DonationsScreen(),
+          ],
+        ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextButton.icon(
-              onPressed: () async {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CampaignGate()));
-              },
-              label: Text('Start your own campaign'),
-            ),
-          ),
-          TextButton(
-              onPressed: () async {
-                campaignList.when(
-                    data: (data) => print(data.first.ownerName),
-                    error: (error, stackTrace) {},
-                    loading: () => const CircularProgressIndicator());
-              },
-              child: Text("Get campaigns list")),
-        ],
-      ),
+      bottomNavigationBar: BottomNavigationBar(
+        
+          backgroundColor: kblue,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white,
+          selectedFontSize: 16,
+          type: BottomNavigationBarType.fixed,
+          onTap: (index) =>
+              ref.read(currentPageProvider.notifier).state = index,
+          currentIndex: currentPage,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.attach_money), label: 'Campaigns'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.local_police), label: 'Seek Help'),
+          ]),
     );
   }
 }

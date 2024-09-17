@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frs/screens/homescreen.dart';
 import 'package:frs/screens/login_screen.dart';
-import 'package:frs/services/authentication/auth_servicec.dart';
+import 'package:frs/providers/Authentication/auth_servicec.dart';
 
 class AuthGate extends ConsumerWidget {
   const AuthGate({super.key});

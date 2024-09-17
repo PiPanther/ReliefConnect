@@ -6,15 +6,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frs/models/campaign.dart';
 import 'package:frs/models/donation_taker.dart';
+import 'package:frs/providers/Authentication/auth_servicec.dart';
 import 'package:image_picker/image_picker.dart';
 
 final fireStoreProvider = Provider((ref) => FirebaseFirestore.instance);
 
-final campaignListProvider = FutureProvider<List<Campaign>>((ref) async {
-  final firestore = ref.read(fireStoreProvider);
-  final currentUser = FirebaseAuth.instance.currentUser;
-  final campaigns = DonationRepository(firestore, currentUser);
-  return campaigns.getCampaigns();
+final campaignListProvider = Provider<Stream<List<Campaign>>>((ref) {
+  final fireStore = ref.watch(fireStoreProvider);
+  final user = ref.watch(currentUserProvider);
+  return DonationRepository(fireStore, user).getCampaigns();
 });
 
 final donationRepositoryProvider = Provider((ref) {
@@ -53,7 +53,10 @@ class DonationRepository {
           .child(_user!.uid)
           .child(file.name);
       await reference.putFile(File(file.path));
-      return await reference.getDownloadURL();
+
+      final url = await reference.getDownloadURL();
+      print(url);
+      return url;
     } catch (e) {
       print("Error uploading thumbnail. ${e.toString()}");
       return null;
@@ -83,6 +86,7 @@ class DonationRepository {
         await reference.putFile(File(image.path));
         String imageUrl = await reference.getDownloadURL();
         imageUrls.add(imageUrl);
+        print(imageUrls);
       } catch (e) {
         print("Upload failed : Images List ${e.toString()}");
       }
@@ -136,16 +140,19 @@ class DonationRepository {
     }
   }
 
-  Future<List<Campaign>> getCampaigns() async {
+  Stream<List<Campaign>> getCampaigns() {
     try {
-      final querySnapshot = await _firestore.collection('campaigns').get();
-      List<Campaign> campaigns = querySnapshot.docs.map((doc) {
-        return Campaign.fromMap(doc.data());
-      }).toList();
-      return campaigns;
+      return _firestore
+          .collection('campaigns')
+          .snapshots()
+          .map((querySnapshot) {
+        return querySnapshot.docs.map((doc) {
+          return Campaign.fromMap(doc.data());
+        }).toList();
+      });
     } catch (e) {
       print("Error fetching campaigns");
-      return [];
+      return Stream.value([]); // Returning an empty list in case of an error
     }
   }
 }

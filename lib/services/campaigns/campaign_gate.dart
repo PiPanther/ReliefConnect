@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:frs/providers/campaigns/campaign_provider.dart';
+import 'package:frs/providers/Campaigns/campaign_provider.dart';
 import 'package:frs/screens/campaign_homepage.dart';
 import 'package:frs/screens/campaign_registation.dart';
 
@@ -25,7 +25,17 @@ class CampaignGate extends ConsumerWidget {
           }
 
           if (snapshot.hasData && snapshot.data == true) {
-            return const CampaignHomepage();
+            return AlertDialog(
+              title: const Text("Campaign Already Exists"),
+              content: const Text("Cannot register more than one campaign."),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Okay'),
+                ),
+              ],
+            );
+            ;
           }
 
           return const CampaignRegistationScreen();
