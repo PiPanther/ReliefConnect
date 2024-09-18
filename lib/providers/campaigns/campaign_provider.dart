@@ -37,7 +37,8 @@ class DonationRepository {
 
   Future<String?> pickAndUploadThumbnail() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? image =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 25);
     if (image != null) {
       String? thumbnailUrl = await uploadThumbnail(image);
       return thumbnailUrl;
@@ -65,7 +66,8 @@ class DonationRepository {
 
   Future<List<String>> pickAndUploadMultipleImages() async {
     final ImagePicker picker = ImagePicker();
-    final List<XFile>? images = await picker.pickMultiImage();
+    final List<XFile>? images =
+        await picker.pickMultiImage(limit: 2, imageQuality: 25);
     if (images != null) {
       return await uploadMultipleImages(images);
     }

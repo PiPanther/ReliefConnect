@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frs/components/calling_icon.dart';
-import 'package:frs/components/webview.dart';
+import 'package:frs/components/card.dart';
 import 'package:frs/constants/constants.dart';
 import 'package:frs/constants/pallette.dart';
 import 'package:frs/providers/Authentication/auth_servicec.dart';
@@ -116,61 +116,42 @@ class Homepage extends ConsumerWidget {
               ),
             ],
           ),
-          // Text("hello ")
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(vertical: 10),
-          //   child: FutureBuilder(
-          //     future: ref.watch(weatherServiceProvider).fetchWeather(),
-          //     builder: (context, snapshot) {
-          //       if (snapshot.connectionState == ConnectionState.waiting) {
-          //         return const Center(child: CircularProgressIndicator());
-          //       }
-
-          //       if (!snapshot.hasData) {
-          //         print(snapshot.data);
-          //         return const Row(
-          //           children: [
-          //             MyCard(
-          //                 text: "22*",
-          //                 description: 'Temperature',
-          //                 icon: Icon(
-          //                   Icons.thermostat_auto_outlined,
-          //                   size: 32,
-          //                   color: kblue,
-          //                 )),
-          //             MyCard(
-          //                 text: "04",
-          //                 description: 'Temperature',
-          //                 icon: Icon(
-          //                   Icons.wind_power,
-          //                   size: 32,
-          //                   color: kblue,
-          //                 )),
-          //             MyCard(
-          //                 text: "**",
-          //                 description: 'Temperature',
-          //                 icon: Icon(
-          //                   Icons.cloud,
-          //                   size: 32,
-          //                   color: kblue,
-          //                 )),
-          //             MyCard(
-          //                 text: "22*",
-          //                 description: 'Temperature',
-          //                 icon: Icon(
-          //                   Icons.sunny,
-          //                   size: 32,
-          //                   color: kblue,
-          //                 )),
-          //           ],
-          //         );
-          //       } else {
-          //         return Text("No data available");
-          //       }
-          //     },
-          //   ),
-          // ),
-
+          Row(
+            children: [
+              MyCard(
+                  text: "22*",
+                  description: 'Temperature',
+                  icon: Icon(
+                    Icons.thermostat_auto_outlined,
+                    size: 32,
+                    color: kblue,
+                  )),
+              MyCard(
+                  text: "04",
+                  description: 'Temperature',
+                  icon: Icon(
+                    Icons.wind_power,
+                    size: 32,
+                    color: kblue,
+                  )),
+              MyCard(
+                  text: "**",
+                  description: 'Temperature',
+                  icon: Icon(
+                    Icons.cloud,
+                    size: 32,
+                    color: kblue,
+                  )),
+              MyCard(
+                  text: "22*",
+                  description: 'Temperature',
+                  icon: Icon(
+                    Icons.sunny,
+                    size: 32,
+                    color: kblue,
+                  )),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Card.outlined(
@@ -207,22 +188,6 @@ class Homepage extends ConsumerWidget {
               ),
             ),
           ),
-          ButtonBar(
-            children: [
-              IconButton(
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WebViewPage(
-                            url: "https://ashimanual.vercel.app",
-                            title: "Ashish"),
-                      ),
-                    );
-                  },
-                  icon: Icon(Icons.call))
-            ],
-          )
         ],
       ),
     );

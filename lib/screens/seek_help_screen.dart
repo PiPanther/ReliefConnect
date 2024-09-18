@@ -46,6 +46,7 @@ class DonationsScreen extends ConsumerWidget {
               ),
             ),
           ),
+          const Text("Active"),
           StreamBuilder(
             stream: complaintService.getActiveComplaints(),
             builder: (context, snapshot) {
@@ -65,6 +66,25 @@ class DonationsScreen extends ConsumerWidget {
               return EmergencyCardList(complaints);
             },
           ),
+          const Text("Resolved"),
+          StreamBuilder(
+            stream: complaintService.getResolvedComplaints(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CPI();
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                return const Center(
+                  child: Text(""),
+                );
+              }
+              final complaints = snapshot.data!;
+              return EmergencyCardList(complaints);
+            },
+          ),
         ],
       ),
     );
@@ -73,13 +93,14 @@ class DonationsScreen extends ConsumerWidget {
   Expanded EmergencyCardList(List<ComplaintModel> complaints) {
     return Expanded(
       child: ListView.builder(
+          shrinkWrap: true,
           itemCount: complaints.length,
           itemBuilder: (context, index) {
             final complaint = complaints[index];
             return ListTile(
               title: Container(
                 padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: kpink, style: BorderStyle.solid)),

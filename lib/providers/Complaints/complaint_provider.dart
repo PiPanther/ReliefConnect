@@ -19,7 +19,8 @@ class ComplaintService {
 
   Future<List<String>> pickAndUploadMultipleImages() async {
     final ImagePicker picker = ImagePicker();
-    final List<XFile>? images = await picker.pickMultiImage();
+    final List<XFile>? images =
+        await picker.pickMultiImage(imageQuality: 25, limit: 2);
     if (images != null) {
       return await uploadMultipleImages(images);
     }
@@ -107,7 +108,7 @@ class ComplaintService {
       final resolvedComplaintsRef = _firebaseFirestore
           .collection('complaints')
           .doc('resolved')
-          .collection('resolved')
+          .collection(userId)
           .doc(userId);
 
       await resolvedComplaintsRef.set({
@@ -169,13 +170,17 @@ class ComplaintService {
           .doc('resolved')
           .collection(userId);
 
-      // Return a stream of resolved complaints as List<ComplaintModel>
       return resolvedComplaintsRef.snapshots().map((querySnapshot) {
+        // Debug log to check if documents are being retrieved
+        print('Fetched ${querySnapshot.docs.length} resolved complaints.');
+
         return querySnapshot.docs
             .map((doc) => ComplaintModel.fromMap(doc.data()))
             .toList();
       });
     } catch (e) {
+      // Log exception details
+      print('Error fetching resolved complaints: $e');
       throw Exception(e.toString());
     }
   }

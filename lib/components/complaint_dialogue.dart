@@ -102,6 +102,24 @@ class ComplaintDialog extends ConsumerWidget {
                   ),
                 ),
               ),
+              SizedBox(
+                width: double.infinity,
+                child: TextButton.icon(
+                  style: const ButtonStyle(
+                      elevation: WidgetStatePropertyAll(2.0),
+                      backgroundColor: WidgetStatePropertyAll<Color>(kblue)),
+                  onPressed: () async {
+                    await complaintProvider.resolveComplaint(complaint.user_id);
+                    Navigator.pop(context);
+                  },
+                  label: Text(
+                    'Resolve Complaint',
+                    style: TextStyling()
+                        .styleh3
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
