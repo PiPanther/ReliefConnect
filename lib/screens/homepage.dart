@@ -116,7 +116,10 @@ class Homepage extends ConsumerWidget {
               ),
             ],
           ),
-          Row(
+          const SizedBox(
+            height: 20,
+          ),
+           Row(
             children: [
               MyCard(
                   text: "22*",

@@ -3,12 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frs/components/complaint_dialogue.dart';
 import 'package:frs/components/cpi.dart';
 import 'package:frs/components/register_complaint.dart';
-import 'package:frs/constants/enums.dart';
 import 'package:frs/constants/pallette.dart';
 import 'package:frs/models/complaint_model.dart';
-import 'package:frs/providers/Authentication/auth_servicec.dart';
 import 'package:frs/providers/Complaints/complaint_provider.dart';
-import 'package:frs/providers/Location/location_provider.dart';
 
 class DonationsScreen extends ConsumerWidget {
   const DonationsScreen({super.key});
@@ -16,8 +13,7 @@ class DonationsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final complaintService = ref.watch(complaintServiceProvider);
-    final user = ref.read(currentUserProvider);
-    final locationUser = ref.watch(locationPrvider).getCurrentLocation();
+   
     return Scaffold(
       appBar: AppBar(),
       body: Column(

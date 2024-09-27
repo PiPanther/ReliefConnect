@@ -5,6 +5,7 @@ import 'package:frs/constants/pallette.dart';
 import 'package:frs/providers/Authentication/auth_servicec.dart';
 import 'package:frs/providers/nav_bar_provider.dart';
 import 'package:frs/screens/campaign_homepage.dart';
+import 'package:frs/screens/posts_screen.dart';
 import 'package:frs/screens/seek_help_screen.dart';
 import 'package:frs/screens/homepage.dart';
 
@@ -36,11 +37,11 @@ class Homescreen extends ConsumerWidget {
             Homepage(),
             CampaignHomepage(),
             DonationsScreen(),
+            PostsScreen(),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        
           backgroundColor: kblue,
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.white,
@@ -55,6 +56,8 @@ class Homescreen extends ConsumerWidget {
                 icon: Icon(Icons.attach_money), label: 'Campaigns'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.local_police), label: 'Seek Help'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.newspaper), label: 'Posts'),
           ]),
     );
   }

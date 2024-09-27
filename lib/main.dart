@@ -6,7 +6,9 @@ import 'package:frs/screens/campaign_homepage.dart';
 import 'package:frs/screens/campaign_registation.dart';
 import 'package:frs/screens/homescreen.dart';
 import 'package:frs/screens/login_screen.dart';
+import 'package:frs/screens/posts_screen.dart';
 import 'package:frs/services/authentication/auth_gate.dart';
+import 'package:toastification/toastification.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,22 +24,25 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      initialRoute: '/',
-      routes: {
-        '/homescreen': (context) => const Homescreen(),
-        '/loginScreen': (context) => const SignInPage2(),
-        '/campaignHomePage': (context) => const CampaignHomepage(),
-        '/campaign_registration': (context) =>
-            const CampaignRegistationScreen(),
-      },
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return ToastificationWrapper(
+      child: MaterialApp(
+        initialRoute: '/',
+        routes: {
+          '/homescreen': (context) => const Homescreen(),
+          '/loginScreen': (context) => const SignInPage2(),
+          '/campaignHomePage': (context) => const CampaignHomepage(),
+          '/campaign_registration': (context) =>
+              const CampaignRegistationScreen(),
+          '/postsScreen': (context) => const PostsScreen(),
+        },
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: const AuthGate(),
       ),
-      home: const AuthGate(),
     );
   }
 }

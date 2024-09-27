@@ -3,16 +3,16 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 final locationPrvider = Provider((ref) => LocationService());
+final addressProvider = Provider<String>((ref) => LocationService().location);
 
 class LocationService {
+  String location = "India";
   Future<Map<String, double>> getCurrentLocation() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-
-    if (!serviceEnabled) {
-      throw Exception("Location Services are disabled");
-    }
-
     LocationPermission permission = await Geolocator.checkPermission();
+    if (!serviceEnabled) {
+      permission = await Geolocator.requestPermission();
+    }
 
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -45,9 +45,9 @@ class LocationService {
       // Check if any placemarks were returned
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
-
+        location = '${place.street}, ${place.locality}, ${place.postalCode}';
         // Construct address string
-        return '${place.street}, ${place.locality}, ${place.postalCode}';
+        return '${place.locality}, ${place.postalCode}';
       } else {
         throw Exception('No address found for the given coordinates.');
       }
