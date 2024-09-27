@@ -18,7 +18,8 @@ FRS is a Flutter application designed to connect people in need of emergency ass
 - **Campaign Tracking:** Displays information about active relief campaigns and the impact of donations.
 - **User Authentication:** Enables user accounts for personalized experience and donation management.
 - **Social Media Integration:** Option to share emergency reports or campaign information on social media.
-- **Multilingual Support:** Potential for localization to reach a wider audience.
+- **Sharing Post Functions:** Imtegration for sharing posts and view all the posts in a specified range.
+
 
 ## Installation
 
